@@ -1,13 +1,10 @@
 import express from "express";
 import mongoose from "mongoose";
 import { registerValidation, loginValidation } from "./validations/auth.js";
-import checkAuth from "./utils/checkAuth.js";
-import { getMe, login, register } from "./controllers/UserController.js";
-import * as PostController from "./controllers/PostController.js";
-import * as UserController from "./controllers/UserController.js";
 import { postCreateValidation } from "./validations/post.js";
 import multer from "multer";
-import handleValidationErrors from "./utils/handleValidationErrors.js";
+import { UserController, PostController } from './controllers/index.js';
+import { checkAuth, handleValidationErrors } from './utils/index.js'
 
 mongoose
   .connect("mongodb://localhost:27017/fullstack_blog")
@@ -51,7 +48,7 @@ app.post('/upload', checkAuth, upload.single('image'), (req, res) =>{
 
 app.get("/posts", PostController.getAll);
 app.get("/posts/:id", PostController.getOne);
-app.post("/posts", checkAuth, postCreateValidation, PostController.create);
+app.post("/posts", checkAuth, postCreateValidation, handleValidationErrors, PostController.create);
 app.delete("/posts/:id", checkAuth, PostController.remove);
 app.patch("/posts/:id", checkAuth, PostController.update);
 
