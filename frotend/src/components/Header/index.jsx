@@ -13,6 +13,7 @@ export const Header = () => {
   const onClickLogout = () => {
     if (window.confirm('Выдейсвительно хотите выйти?')) {
       dispatch(logout())
+      localStorage.clear()
     }
   };
 
